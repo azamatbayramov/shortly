@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log/slog"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -15,13 +16,31 @@ import (
 func main() {
 	appConfig, err := config.LoadConfig()
 
+	if err != nil {
+		slog.Error("failed to load config", "error", err)
+		return
+	}
+
 	r := gin.Default()
 
-	appStorage, err := storage.NewMemoryStorage()
+	var appStorage storage.Storage
+
+	if appConfig.StorageType == "in_memory" {
+		appStorage, err = storage.NewMemoryStorage()
+	} else if appConfig.StorageType == "postgresql" {
+		appStorage, err = storage.NewPostgreSQLStorage(appConfig)
+	}
+
+	if err != nil {
+		slog.Error("failed to create storage", "error", err)
+		return
+	}
+
 	appCoder, err := coder.NewBaseCoder(appConfig.CoderAlphabet, appConfig.CoderLength)
 
 	if err != nil {
-		panic(err)
+		slog.Error("failed to create coder", "error", err)
+		return
 	}
 
 	shortenerService := service.NewShortenerService(appStorage, appCoder, appConfig)
@@ -32,6 +51,7 @@ func main() {
 
 	err = r.Run(appConfig.AppHost + ":" + strconv.Itoa(appConfig.AppPort))
 	if err != nil {
+		slog.Error("failed to run server", "error", err)
 		return
 	}
 }
