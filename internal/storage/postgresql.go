@@ -38,7 +38,7 @@ func NewPostgreSQLStorage(config *config.Config) (*PostgreSQLStorage, error) {
 	return &PostgreSQLStorage{pool: pool}, nil
 }
 
-func (storage PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
+func (stor PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -46,7 +46,7 @@ func (storage PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 
 	query := `SELECT link FROM links WHERE id = $1`
 
-	err := storage.pool.QueryRow(ctx, query, id).Scan(&link)
+	err := stor.pool.QueryRow(ctx, query, id).Scan(&link)
 	if err != nil {
 		if err.Error() == "no rows in result set" {
 			return "", appErrors.LinkNotFound
@@ -58,7 +58,7 @@ func (storage PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 	return link, nil
 }
 
-func (storage PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error) {
+func (stor PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -68,7 +68,7 @@ func (storage PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error
 SELECT id FROM links WHERE link = $1
 `
 
-	err := storage.pool.QueryRow(ctx, getQuery, link).Scan(&id)
+	err := stor.pool.QueryRow(ctx, getQuery, link).Scan(&id)
 
 	if err == nil {
 		return id, nil
@@ -91,7 +91,7 @@ SELECT id FROM links WHERE link = $1
 LIMIT 1;
 `
 
-	err = storage.pool.QueryRow(ctx, insertQuery, link).Scan(&id)
+	err = stor.pool.QueryRow(ctx, insertQuery, link).Scan(&id)
 
 	if err != nil {
 		return 0, err
