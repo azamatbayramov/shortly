@@ -34,7 +34,7 @@ func LoadConfig() (*Config, error) {
 
 	cfg.PostgresHost = getEnv("POSTGRES_HOST", "")
 	cfg.PostgresPort = getEnvAsInt("POSTGRES_PORT", 5432)
-	cfg.PostgresDatabase = getEnv("POSTGRES_DATABASE", "")
+	cfg.PostgresDatabase = getEnv("POSTGRES_DB", "")
 	cfg.PostgresUser = getEnv("POSTGRES_USER", "")
 	cfg.PostgresPassword = getEnv("POSTGRES_PASSWORD", "")
 
