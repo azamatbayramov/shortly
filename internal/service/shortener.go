@@ -56,7 +56,7 @@ func (srv ShortenerService) ShortenLink(link string) (string, error) {
 		return "", appErrors.OriginalLinkIsNotValid
 	}
 
-	id, err := srv.storage.GetIdByLinkOrAddNew(link)
+	id, err := srv.storage.GetOrCreateLink(link)
 
 	if err != nil {
 		slog.Error("failed to get id by link or add new", "error", err)

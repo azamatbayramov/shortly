@@ -34,7 +34,7 @@ func (stor *MemoryStorage) GetLinkById(id uint64) (string, error) {
 	return link, nil
 }
 
-func (stor *MemoryStorage) GetIdByLinkOrAddNew(link string) (uint64, error) {
+func (stor *MemoryStorage) GetOrCreateLink(link string) (uint64, error) {
 	stor.mu.Lock()
 	defer stor.mu.Unlock()
 
