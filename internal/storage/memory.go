@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"errors"
+	"shortly/internal/appErrors"
 	"sync"
 )
 
@@ -28,7 +28,7 @@ func (storage *MemoryStorage) GetLinkById(id uint64) (string, error) {
 
 	link, exists := storage.idToLink[id]
 	if !exists {
-		return "", errors.New("link not found")
+		return "", appErrors.LinkNotFound
 	}
 
 	return link, nil
