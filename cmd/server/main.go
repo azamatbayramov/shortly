@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	appConfig, err := config.LoadConfig()
+	cfg, err := config.LoadConfig()
 
 	if err != nil {
 		slog.Error("failed to load config", "error", err)
@@ -23,12 +23,12 @@ func main() {
 
 	r := gin.Default()
 
-	var appStorage storage.Storage
+	var stor storage.Storage
 
-	if appConfig.StorageType == "in_memory" {
-		appStorage, err = storage.NewMemoryStorage()
-	} else if appConfig.StorageType == "postgresql" {
-		appStorage, err = storage.NewPostgreSQLStorage(appConfig)
+	if cfg.StorageType == "in_memory" {
+		stor, err = storage.NewMemoryStorage()
+	} else if cfg.StorageType == "postgresql" {
+		stor, err = storage.NewPostgreSQLStorage(cfg)
 	}
 
 	if err != nil {
@@ -36,20 +36,20 @@ func main() {
 		return
 	}
 
-	appCoder, err := coder.NewBaseCoder(appConfig.CoderAlphabet, appConfig.CoderLength)
+	codr, err := coder.NewBaseCoder(cfg.CoderAlphabet, cfg.CoderLength)
 
 	if err != nil {
 		slog.Error("failed to create coder", "error", err)
 		return
 	}
 
-	shortenerService := service.NewShortenerService(appStorage, appCoder, appConfig)
+	shortenerService := service.NewShortenerService(stor, codr, cfg)
 	shortenerController := controller.NewShortenerController(shortenerService)
 
 	r.POST("/shorten", shortenerController.ShortenLink)
 	r.GET("/:short_url", shortenerController.GetLink)
 
-	err = r.Run(appConfig.AppHost + ":" + strconv.Itoa(appConfig.AppPort))
+	err = r.Run(cfg.AppHost + ":" + strconv.Itoa(cfg.AppPort))
 	if err != nil {
 		slog.Error("failed to run server", "error", err)
 		return
