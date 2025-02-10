@@ -42,8 +42,8 @@ func (stor PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 	query := `SELECT link FROM links WHERE id = $1`
 
 	var link string
-
 	err := stor.pool.QueryRow(ctx, query, id).Scan(&link)
+
 	if err != nil {
 		if err.Error() == "no rows in result set" {
 			return "", appErrors.LinkNotFound
