@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"sync"
 )
 
@@ -22,11 +22,11 @@ func NewMemoryStorage() (*MemoryStorage, error) {
 	}, nil
 }
 
-func (storage *MemoryStorage) GetLinkById(id uint64) (string, error) {
-	storage.mu.RLock()
-	defer storage.mu.RUnlock()
+func (stor *MemoryStorage) GetLinkById(id uint64) (string, error) {
+	stor.mu.RLock()
+	defer stor.mu.RUnlock()
 
-	link, exists := storage.idToLink[id]
+	link, exists := stor.idToLink[id]
 	if !exists {
 		return "", appErrors.LinkNotFound
 	}
@@ -34,20 +34,20 @@ func (storage *MemoryStorage) GetLinkById(id uint64) (string, error) {
 	return link, nil
 }
 
-func (storage *MemoryStorage) GetIdByLinkOrAddNew(link string) (uint64, error) {
-	storage.mu.Lock()
-	defer storage.mu.Unlock()
+func (stor *MemoryStorage) GetOrCreateLink(link string) (uint64, error) {
+	stor.mu.Lock()
+	defer stor.mu.Unlock()
 
-	id, exists := storage.linkToId[link]
+	id, exists := stor.linkToId[link]
 	if exists {
 		return id, nil
 	}
 
-	id = storage.count
+	id = stor.count
 
-	storage.count++
-	storage.idToLink[id] = link
-	storage.linkToId[link] = id
+	stor.count++
+	stor.idToLink[id] = link
+	stor.linkToId[link] = id
 
 	return id, nil
 }

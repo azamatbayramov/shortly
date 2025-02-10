@@ -1,4 +1,4 @@
-module shortly
+module github.com/azamatbayramov/shortly
 
 go 1.23
 

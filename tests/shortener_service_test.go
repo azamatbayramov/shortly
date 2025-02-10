@@ -1,11 +1,11 @@
 package tests
 
 import (
-	"shortly/config"
-	"shortly/internal/appErrors"
-	"shortly/internal/service"
-	"shortly/internal/storage"
-	"shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/config"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/service"
+	"github.com/azamatbayramov/shortly/internal/storage"
+	"github.com/azamatbayramov/shortly/pkg/coder"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

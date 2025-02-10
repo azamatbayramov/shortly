@@ -12,11 +12,11 @@ type Config struct {
 
 	StorageType string
 
-	PostgresHost     string
-	PostgresPort     int
-	PostgresDatabase string
-	PostgresUser     string
-	PostgresPassword string
+	PsqlHost     string
+	PsqlPort     int
+	PsqlDatabase string
+	PsqlUser     string
+	PsqlPassword string
 
 	CoderAlphabet string
 	CoderLength   int
@@ -32,11 +32,11 @@ func LoadConfig() (*Config, error) {
 
 	cfg.StorageType = getEnv("STORAGE_TYPE", "in_memory")
 
-	cfg.PostgresHost = getEnv("POSTGRES_HOST", "")
-	cfg.PostgresPort = getEnvAsInt("POSTGRES_PORT", 5432)
-	cfg.PostgresDatabase = getEnv("POSTGRES_DB", "")
-	cfg.PostgresUser = getEnv("POSTGRES_USER", "")
-	cfg.PostgresPassword = getEnv("POSTGRES_PASSWORD", "")
+	cfg.PsqlHost = getEnv("POSTGRES_HOST", "")
+	cfg.PsqlPort = getEnvAsInt("POSTGRES_PORT", 5432)
+	cfg.PsqlDatabase = getEnv("POSTGRES_DB", "")
+	cfg.PsqlUser = getEnv("POSTGRES_USER", "")
+	cfg.PsqlPassword = getEnv("POSTGRES_PASSWORD", "")
 
 	cfg.CoderAlphabet = getEnv(
 		"CODER_ALPHABET", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_",

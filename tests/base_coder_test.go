@@ -1,8 +1,8 @@
 package tests
 
 import (
+	"github.com/azamatbayramov/shortly/pkg/coder"
 	"github.com/stretchr/testify/assert"
-	"shortly/pkg/coder"
 	"testing"
 )
 

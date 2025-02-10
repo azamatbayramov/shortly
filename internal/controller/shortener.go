@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"shortly/internal/appErrors"
-	"shortly/internal/models"
-	"shortly/internal/service"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/models"
+	"github.com/azamatbayramov/shortly/internal/service"
 )
 
 type ShortenerController struct {
@@ -20,7 +20,7 @@ func NewShortenerController(service *service.ShortenerService) *ShortenerControl
 }
 
 func (ctrl ShortenerController) ShortenLink(c *gin.Context) {
-	var link models.ShortenLink
+	var link models.FullLink
 
 	if err := c.ShouldBind(&link); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
@@ -39,7 +39,7 @@ func (ctrl ShortenerController) ShortenLink(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.ShortenedLink{ShortLink: shortLink})
+	c.JSON(http.StatusOK, models.ShortLink{ShortLink: shortLink})
 }
 
 func (ctrl ShortenerController) GetLink(c *gin.Context) {
