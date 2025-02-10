@@ -25,14 +25,14 @@ func NewShortenerService(storage storage.Storage, coder coder.Coder, config *con
 	}
 }
 
-func (service ShortenerService) GetFullLink(shortLink string) (string, error) {
-	id, err := service.coder.Decode(shortLink)
+func (srv ShortenerService) GetFullLink(shortLink string) (string, error) {
+	id, err := srv.coder.Decode(shortLink)
 
 	if err != nil {
 		return "", appErrors.ShortLinkIsNotValid
 	}
 
-	link, err := service.storage.GetLinkById(id)
+	link, err := srv.storage.GetLinkById(id)
 
 	if err != nil {
 		if errors.Is(err, appErrors.LinkNotFound) {
@@ -46,8 +46,8 @@ func (service ShortenerService) GetFullLink(shortLink string) (string, error) {
 	return link, nil
 }
 
-func (service ShortenerService) ShortenLink(link string) (string, error) {
-	if len(link) > service.config.OriginalLinkMaxLength {
+func (srv ShortenerService) ShortenLink(link string) (string, error) {
+	if len(link) > srv.config.OriginalLinkMaxLength {
 		return "", appErrors.OriginalLinkIsTooLong
 	}
 
@@ -56,14 +56,14 @@ func (service ShortenerService) ShortenLink(link string) (string, error) {
 		return "", appErrors.OriginalLinkIsNotValid
 	}
 
-	id, err := service.storage.GetIdByLinkOrAddNew(link)
+	id, err := srv.storage.GetIdByLinkOrAddNew(link)
 
 	if err != nil {
 		slog.Error("failed to get id by link or add new", "error", err)
 		return "", appErrors.StorageError
 	}
 
-	shortLink, err := service.coder.Encode(id)
+	shortLink, err := srv.coder.Encode(id)
 
 	if err != nil {
 		slog.Error("failed to encode id", "error", err)
