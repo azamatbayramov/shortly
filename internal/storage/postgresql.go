@@ -68,7 +68,7 @@ func (storage PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error
 UNION ALL
 WITH inserted AS (
     INSERT INTO links (link) 
-    SELECT $1
+    VALUES ($1)
     ON CONFLICT (link) DO NOTHING
     RETURNING id
 )
