@@ -39,9 +39,9 @@ func (stor PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var link string
-
 	query := `SELECT link FROM links WHERE id = $1`
+
+	var link string
 
 	err := stor.pool.QueryRow(ctx, query, id).Scan(&link)
 	if err != nil {
