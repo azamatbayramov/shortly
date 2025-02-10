@@ -1,7 +1,6 @@
 package coder
 
 import (
-	"errors"
 	"math"
 	"strings"
 )
@@ -18,14 +17,14 @@ var _ Coder = (*BaseCoder)(nil)
 
 func NewBaseCoder(alphabet string, length int) (*BaseCoder, error) {
 	if len(alphabet) < 2 {
-		return nil, errors.New("alphabet length must be at least 2")
+		return nil, ErrAlphabetLengthLessThanTwo
 	}
 
 	charToIndex := make(map[rune]int)
 
 	for i, char := range alphabet {
 		if _, exists := charToIndex[char]; exists {
-			return nil, errors.New("duplicate character in alphabet")
+			return nil, ErrDuplicateCharInAlphabet
 		}
 		charToIndex[char] = i
 	}
@@ -45,7 +44,7 @@ func (coder BaseCoder) Encode(n uint64) (string, error) {
 	var encoded strings.Builder
 
 	if n > coder.MaxDecodedValue {
-		return "", errors.New("number is too large to be encoded")
+		return "", ErrNumberTooLargeToBeEncoded
 	}
 
 	for n > 0 {
@@ -70,14 +69,14 @@ func (coder BaseCoder) Decode(s string) (uint64, error) {
 	var n uint64
 
 	if len(s) != coder.length {
-		return 0, errors.New("invalid encoded string length")
+		return 0, ErrInvalidEncodedStringLength
 	}
 
 	for _, char := range s {
 		index, exists := coder.charToIndex[char]
 
 		if !exists {
-			return 0, errors.New("invalid character in encoded string")
+			return 0, ErrInvalidCharInEncodedString
 		}
 
 		n = n*uint64(coder.base) + uint64(index)
