@@ -17,9 +17,6 @@ type PostgreSQLStorage struct {
 var _ Storage = (*PostgreSQLStorage)(nil)
 
 func NewPostgreSQLStorage(config *config.Config) (*PostgreSQLStorage, error) {
-	var pool *pgxpool.Pool
-	var err error
-
 	dbSource := fmt.Sprintf(
 		"postgresql://%s:%s@%s:%s/%s",
 		config.PostgresUser,
@@ -29,7 +26,7 @@ func NewPostgreSQLStorage(config *config.Config) (*PostgreSQLStorage, error) {
 		config.PostgresDatabase,
 	)
 
-	pool, err = pgxpool.New(context.Background(), dbSource)
+	pool, err := pgxpool.New(context.Background(), dbSource)
 
 	if err != nil {
 		return nil, err
