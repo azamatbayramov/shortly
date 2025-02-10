@@ -3,9 +3,9 @@ package storage
 import (
 	"context"
 	"fmt"
+	"github.com/azamatbayramov/shortly/config"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"shortly/config"
-	"shortly/internal/appErrors"
 	"strconv"
 	"time"
 )

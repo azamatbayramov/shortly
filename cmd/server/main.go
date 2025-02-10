@@ -7,11 +7,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"shortly/config"
-	"shortly/internal/controller"
-	"shortly/internal/service"
-	"shortly/internal/storage"
-	"shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/config"
+	"github.com/azamatbayramov/shortly/internal/controller"
+	"github.com/azamatbayramov/shortly/internal/service"
+	"github.com/azamatbayramov/shortly/internal/storage"
+	"github.com/azamatbayramov/shortly/pkg/coder"
 )
 
 func main() {

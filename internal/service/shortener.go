@@ -2,13 +2,13 @@ package service
 
 import (
 	"errors"
+	"github.com/azamatbayramov/shortly/config"
 	"log/slog"
 	"regexp"
-	"shortly/config"
 
-	"shortly/internal/appErrors"
-	"shortly/internal/storage"
-	"shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/storage"
+	"github.com/azamatbayramov/shortly/pkg/coder"
 )
 
 type ShortenerService struct {

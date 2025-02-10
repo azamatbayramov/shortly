@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"sync"
 )
 

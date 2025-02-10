@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"shortly/internal/appErrors"
-	"shortly/internal/storage"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/storage"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

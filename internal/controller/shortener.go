@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"shortly/internal/appErrors"
-	"shortly/internal/models"
-	"shortly/internal/service"
+	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/internal/models"
+	"github.com/azamatbayramov/shortly/internal/service"
 )
 
 type ShortenerController struct {
