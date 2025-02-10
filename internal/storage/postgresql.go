@@ -15,7 +15,7 @@ type PostgreSQLStorage struct {
 
 var _ Storage = (*PostgreSQLStorage)(nil)
 
-func NewPostgreSQLStorage(config config.Config) (*PostgreSQLStorage, error) {
+func NewPostgreSQLStorage(config *config.Config) (*PostgreSQLStorage, error) {
 	var pool *pgxpool.Pool
 	var err error
 
