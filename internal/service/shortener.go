@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"log/slog"
 	"regexp"
 	"shortly/config"
 
@@ -38,6 +39,7 @@ func (service ShortenerService) GetFullLink(shortLink string) (string, error) {
 			return "", appErrors.LinkNotFound
 		}
 
+		slog.Error("failed to get link by id", "error", err)
 		return "", appErrors.StorageError
 	}
 
@@ -57,12 +59,14 @@ func (service ShortenerService) ShortenLink(link string) (string, error) {
 	id, err := service.storage.GetIdByLinkOrAddNew(link)
 
 	if err != nil {
+		slog.Error("failed to get id by link or add new", "error", err)
 		return "", appErrors.StorageError
 	}
 
 	shortLink, err := service.coder.Encode(id)
 
 	if err != nil {
+		slog.Error("failed to encode id", "error", err)
 		return "", appErrors.EncodeError
 	}
 
