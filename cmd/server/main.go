@@ -2,6 +2,7 @@ package main
 
 import (
 	"log/slog"
+	"net"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -49,7 +50,7 @@ func main() {
 	r.POST("/shorten", shortenerController.ShortenLink)
 	r.GET("/:short_url", shortenerController.GetLink)
 
-	err = r.Run(cfg.AppHost + ":" + strconv.Itoa(cfg.AppPort))
+	err = r.Run(net.JoinHostPort(cfg.AppHost, strconv.Itoa(cfg.AppPort)))
 	if err != nil {
 		slog.Error("failed to run server", "error", err)
 		return
