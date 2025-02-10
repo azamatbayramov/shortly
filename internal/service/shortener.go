@@ -2,11 +2,10 @@ package service
 
 import (
 	"errors"
-	"github.com/azamatbayramov/shortly/config"
 	"log/slog"
 	"regexp"
 
-	"github.com/azamatbayramov/shortly/internal/appErrors"
+	"github.com/azamatbayramov/shortly/config"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
 )
@@ -29,18 +28,18 @@ func (srv ShortenerService) GetFullLink(shortLink string) (string, error) {
 	id, err := srv.coder.Decode(shortLink)
 
 	if err != nil {
-		return "", appErrors.ShortLinkIsNotValid
+		return "", ErrShortLinkIsNotValid
 	}
 
 	link, err := srv.storage.GetLinkById(id)
 
 	if err != nil {
-		if errors.Is(err, appErrors.LinkNotFound) {
-			return "", appErrors.LinkNotFound
+		if errors.Is(err, storage.ErrLinkNotFound) {
+			return "", ErrLinkNotFound
 		}
 
 		slog.Error("failed to get link by id", "error", err)
-		return "", appErrors.StorageError
+		return "", ErrStorageError
 	}
 
 	return link, nil
@@ -49,26 +48,26 @@ func (srv ShortenerService) GetFullLink(shortLink string) (string, error) {
 func (srv ShortenerService) ShortenLink(link string) (string, error) {
 	const linkRegexp = `^(http|https):\/\/[^\s/$.?#].[^\s]*$`
 	if len(link) > srv.config.OriginalLinkMaxLength {
-		return "", appErrors.OriginalLinkIsTooLong
+		return "", ErrOriginalLinkIsTooLong
 	}
 
 	var validLinkRegex = regexp.MustCompile(linkRegexp)
 	if !validLinkRegex.MatchString(link) {
-		return "", appErrors.OriginalLinkIsNotValid
+		return "", ErrOriginalLinkIsNotValid
 	}
 
 	id, err := srv.storage.GetOrCreateLink(link)
 
 	if err != nil {
 		slog.Error("failed to get id by link or add new", "error", err)
-		return "", appErrors.StorageError
+		return "", ErrStorageError
 	}
 
 	shortLink, err := srv.coder.Encode(id)
 
 	if err != nil {
 		slog.Error("failed to encode id", "error", err)
-		return "", appErrors.EncodeError
+		return "", ErrEncodeError
 	}
 
 	return shortLink, nil

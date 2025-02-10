@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/azamatbayramov/shortly/config"
-	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"strconv"
 	"time"
@@ -46,7 +45,7 @@ func (stor PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			return "", appErrors.LinkNotFound
+			return "", ErrLinkNotFound
 		}
 
 		return "", err

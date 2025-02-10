@@ -2,7 +2,6 @@ package tests
 
 import (
 	"github.com/azamatbayramov/shortly/config"
-	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"github.com/azamatbayramov/shortly/internal/service"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
@@ -28,7 +27,7 @@ func TestShortenerService_ShortenLink(t *testing.T) {
 
 	invalidLink := "invalid_link"
 	_, err = shortener.ShortenLink(invalidLink)
-	assert.ErrorIs(t, err, appErrors.OriginalLinkIsNotValid)
+	assert.ErrorIs(t, err, service.ErrOriginalLinkIsNotValid)
 }
 
 func TestShortenerService_GetFullLink(t *testing.T) {
@@ -45,8 +44,8 @@ func TestShortenerService_GetFullLink(t *testing.T) {
 	assert.Equal(t, link, retrievedLink)
 
 	_, err = shortener.GetFullLink("invalid")
-	assert.ErrorIs(t, err, appErrors.ShortLinkIsNotValid)
+	assert.ErrorIs(t, err, service.ErrShortLinkIsNotValid)
 
 	_, err = shortener.GetFullLink("zzzzzz")
-	assert.ErrorIs(t, err, appErrors.LinkNotFound)
+	assert.ErrorIs(t, err, service.ErrLinkNotFound)
 }
