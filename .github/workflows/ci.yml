@@ -1,4 +1,4 @@
-name: Shortly Application CI
+name: CI
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --skip-unresolved ./app_go
+          args: --skip-unresolved .
 
   build-and-push:
     name: Build and Push Docker Image
