@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"github.com/azamatbayramov/shortly/internal/models"
 	"github.com/azamatbayramov/shortly/internal/service"
 )
@@ -30,7 +29,7 @@ func (ctrl ShortenerController) ShortenLink(c *gin.Context) {
 	shortLink, err := ctrl.service.ShortenLink(link.FullLink)
 
 	if err != nil {
-		if errors.Is(err, appErrors.OriginalLinkIsNotValid) || errors.Is(err, appErrors.OriginalLinkIsTooLong) {
+		if errors.Is(err, service.ErrOriginalLinkIsNotValid) || errors.Is(err, service.ErrOriginalLinkIsTooLong) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -48,12 +47,12 @@ func (ctrl ShortenerController) GetLink(c *gin.Context) {
 	fullLink, err := ctrl.service.GetFullLink(shortLink)
 
 	if err != nil {
-		if errors.Is(err, appErrors.ShortLinkIsNotValid) {
+		if errors.Is(err, service.ErrShortLinkIsNotValid) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		if errors.Is(err, appErrors.LinkNotFound) {
+		if errors.Is(err, service.ErrLinkNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}

@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"github.com/azamatbayramov/shortly/internal/appErrors"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"testing"
 
@@ -12,7 +11,7 @@ func TestMemoryStorage_GetLinkById(t *testing.T) {
 	store, _ := storage.NewMemoryStorage()
 
 	_, err := store.GetLinkById(1)
-	assert.ErrorIs(t, err, appErrors.LinkNotFound)
+	assert.ErrorIs(t, err, storage.ErrLinkNotFound)
 
 	link := "https://example.com"
 	id, _ := store.GetOrCreateLink(link)
