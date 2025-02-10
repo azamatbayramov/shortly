@@ -64,7 +64,10 @@ func (storage PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error
 
 	var id uint64
 
-	query := `SELECT id FROM links WHERE link = $1
+	query := `WITH existing AS (
+    SELECT id FROM links WHERE link = $1
+)
+SELECT id FROM existing
 UNION ALL
 WITH inserted AS (
     INSERT INTO links (link) 
