@@ -27,7 +27,7 @@ jobs:
         run: go mod download
 
       - name: Lint code
-        run: go fmt
+        run: go vet ./...
 
       - name: Run tests
         run: go test ./tests
