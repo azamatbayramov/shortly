@@ -64,7 +64,17 @@ func (storage PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error
 
 	var id uint64
 
-	query := `INSERT INTO links (link) VALUES ($1) RETURNING id ON CONFLICT DO NOTHING`
+	query := `WITH inserted AS (
+    INSERT INTO links (link) 
+    VALUES ($1)
+    ON CONFLICT (link) DO NOTHING
+    RETURNING id
+)
+SELECT id FROM inserted 
+UNION ALL
+SELECT id FROM links WHERE link = $1
+LIMIT 1;
+`
 
 	err := storage.pool.QueryRow(ctx, query, link).Scan(&id)
 	if err != nil {
