@@ -61,9 +61,7 @@ func (stor PostgreSQLStorage) GetIdByLinkOrAddNew(link string) (uint64, error) {
 
 	var id uint64
 
-	getQuery := `
-SELECT id FROM links WHERE link = $1
-`
+	getQuery := `SELECT id FROM links WHERE link = $1`
 
 	err := stor.pool.QueryRow(ctx, getQuery, link).Scan(&id)
 
