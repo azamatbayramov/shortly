@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"shortly/config"
+	"shortly/internal/appErrors"
 	"strconv"
 	"time"
 )
@@ -47,6 +48,10 @@ func (storage PostgreSQLStorage) GetLinkById(id uint64) (string, error) {
 
 	err := storage.pool.QueryRow(ctx, query, id).Scan(&link)
 	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return "", appErrors.LinkNotFound
+		}
+
 		return "", err
 	}
 
