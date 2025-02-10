@@ -15,6 +15,8 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+
 	cfg, err := config.LoadConfig()
 
 	if err != nil {
