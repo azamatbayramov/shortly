@@ -14,7 +14,7 @@ COPY . .
 
 RUN go build -ldflags="-s -w" -o /build/app cmd/server/main.go
 
-FROM scratch
+FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 COPY --from=builder /build/app /app/app
