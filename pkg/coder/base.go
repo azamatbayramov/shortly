@@ -11,7 +11,7 @@ type BaseCoder struct {
 	base            int
 	length          int
 	charToIndex     map[rune]int
-	maxDecodedValue uint64
+	MaxDecodedValue uint64
 }
 
 var _ Coder = (*BaseCoder)(nil)
@@ -37,14 +37,14 @@ func NewBaseCoder(alphabet string, length int) (*BaseCoder, error) {
 		base:            len(alphabet),
 		length:          length,
 		charToIndex:     charToIndex,
-		maxDecodedValue: maxDecodedValue,
+		MaxDecodedValue: maxDecodedValue,
 	}, nil
 }
 
 func (coder BaseCoder) Encode(n uint64) (string, error) {
 	var encoded strings.Builder
 
-	if n > coder.maxDecodedValue {
+	if n > coder.MaxDecodedValue {
 		return "", errors.New("number is too large to be encoded")
 	}
 
