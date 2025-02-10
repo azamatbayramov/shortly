@@ -19,11 +19,11 @@ var _ Storage = (*PostgreSQLStorage)(nil)
 func NewPostgreSQLStorage(config *config.Config) (*PostgreSQLStorage, error) {
 	dbSource := fmt.Sprintf(
 		"postgresql://%s:%s@%s:%s/%s",
-		config.PostgresUser,
-		config.PostgresPassword,
-		config.PostgresHost,
-		strconv.Itoa(config.PostgresPort),
-		config.PostgresDatabase,
+		config.PsqlUser,
+		config.PsqlPassword,
+		config.PsqlHost,
+		strconv.Itoa(config.PsqlPort),
+		config.PsqlDatabase,
 	)
 
 	pool, err := pgxpool.New(context.Background(), dbSource)
