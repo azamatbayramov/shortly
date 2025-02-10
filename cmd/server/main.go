@@ -24,6 +24,8 @@ func main() {
 
 	r := gin.Default()
 
+	r.LoadHTMLFiles("html/index.html")
+
 	var stor storage.Storage
 
 	if cfg.StorageType == "in_memory" {
@@ -49,6 +51,7 @@ func main() {
 
 	r.POST("/shorten", shortenerController.ShortenLink)
 	r.GET("/:short_url", shortenerController.GetLink)
+	r.GET("/", shortenerController.GetMainPage)
 
 	err = r.Run(net.JoinHostPort(cfg.AppHost, strconv.Itoa(cfg.AppPort)))
 	if err != nil {

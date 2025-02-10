@@ -18,5 +18,6 @@ FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 COPY --from=builder /build/app /app/app
+COPY html/ /app/html
 
 CMD ["./app"]
