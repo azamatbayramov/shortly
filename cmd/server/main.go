@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 
 	"shortly/config"
 	"shortly/internal/controller"
@@ -24,7 +24,7 @@ func main() {
 		panic(err)
 	}
 
-	shortenerService := service.NewShortenerService(appStorage, appCoder)
+	shortenerService := service.NewShortenerService(appStorage, appCoder, appConfig)
 	shortenerController := controller.NewShortenerController(shortenerService)
 
 	r.POST("/shorten", shortenerController.ShortenLink)
