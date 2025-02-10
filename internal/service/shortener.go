@@ -47,11 +47,12 @@ func (srv ShortenerService) GetFullLink(shortLink string) (string, error) {
 }
 
 func (srv ShortenerService) ShortenLink(link string) (string, error) {
+	const linkRegexp = `^(http|https):\/\/[^\s/$.?#].[^\s]*$`
 	if len(link) > srv.config.OriginalLinkMaxLength {
 		return "", appErrors.OriginalLinkIsTooLong
 	}
 
-	var validLinkRegex = regexp.MustCompile(`^(http|https):\/\/[^\s/$.?#].[^\s]*$`)
+	var validLinkRegex = regexp.MustCompile(linkRegexp)
 	if !validLinkRegex.MatchString(link) {
 		return "", appErrors.OriginalLinkIsNotValid
 	}
