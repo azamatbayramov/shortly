@@ -3,10 +3,12 @@ package storage
 import (
 	"context"
 	"fmt"
-	"github.com/azamatbayramov/shortly/config"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"strconv"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+
+	"github.com/azamatbayramov/shortly/config"
 )
 
 type PostgreSQLStorage struct {
