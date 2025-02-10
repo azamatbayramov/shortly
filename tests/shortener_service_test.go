@@ -1,13 +1,14 @@
 package tests
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/azamatbayramov/shortly/config"
 	"github.com/azamatbayramov/shortly/internal/service"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestShortenerService_ShortenLink(t *testing.T) {

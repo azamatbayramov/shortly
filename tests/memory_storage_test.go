@@ -1,10 +1,11 @@
 package tests
 
 import (
-	"github.com/azamatbayramov/shortly/internal/storage"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/azamatbayramov/shortly/internal/storage"
 )
 
 func TestMemoryStorage_GetLinkById(t *testing.T) {

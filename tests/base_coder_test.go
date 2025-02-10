@@ -1,9 +1,11 @@
 package tests
 
 import (
-	"github.com/azamatbayramov/shortly/pkg/coder"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/azamatbayramov/shortly/pkg/coder"
 )
 
 func TestNewBaseCoder(t *testing.T) {
