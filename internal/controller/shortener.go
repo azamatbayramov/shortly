@@ -63,3 +63,7 @@ func (ctrl ShortenerController) GetLink(c *gin.Context) {
 
 	c.Redirect(http.StatusFound, fullLink)
 }
+
+func (ctrl ShortenerController) GetMainPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{})
+}

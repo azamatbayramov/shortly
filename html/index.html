@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>azamatbayramov/shortly</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            width: 300px;
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        #shortenedContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #shortenedLink {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>azamatbayramov/shortly</h1>
+<input type="text" id="fullLink" placeholder="Enter a link">
+<button onclick="shortenLink()">Shorten</button>
+<p id="error"></p>
+
+<div id="shortenedContainer">
+    <a id="shortenedLink" href="#" target="_blank"></a>
+</div>
+
+<script>
+    async function shortenLink() {
+        const fullLink = document.getElementById('fullLink').value;
+        const errorElem = document.getElementById('error');
+        const shortContainer = document.getElementById('shortenedContainer');
+        const shortLinkElem = document.getElementById('shortenedLink');
+
+        errorElem.style.display = 'none';
+        shortContainer.style.display = 'none';
+
+        if (!fullLink) {
+            errorElem.textContent = "Please enter a link.";
+            errorElem.style.display = 'block';
+            return;
+        }
+
+        const response = await fetch('/shorten', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({full_link: fullLink})
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            const shortUrl = `${window.location.origin}/${result.short_link}`;
+            shortLinkElem.href = shortUrl;
+            shortLinkElem.textContent = shortUrl;
+            shortContainer.style.display = 'flex';
+        } else {
+            errorElem.textContent = result.error || "An error occurred.";
+            errorElem.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
