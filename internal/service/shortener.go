@@ -3,24 +3,26 @@ package service
 import (
 	"errors"
 	"log/slog"
-	"regexp"
 
 	"github.com/azamatbayramov/shortly/config"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/pkg/link/validator"
 )
 
 type ShortenerService struct {
-	storage storage.Storage
-	coder   coder.Coder
-	config  *config.Config
+	storage       storage.Storage
+	coder         coder.Coder
+	linkValidator validator.Validator
+	config        *config.Config
 }
 
-func NewShortenerService(storage storage.Storage, coder coder.Coder, config *config.Config) *ShortenerService {
+func NewShortenerService(storage storage.Storage, coder coder.Coder, linkValidator validator.Validator, config *config.Config) *ShortenerService {
 	return &ShortenerService{
-		storage: storage,
-		coder:   coder,
-		config:  config,
+		storage:       storage,
+		coder:         coder,
+		linkValidator: linkValidator,
+		config:        config,
 	}
 }
 
@@ -46,13 +48,11 @@ func (srv ShortenerService) GetFullLink(shortLink string) (string, error) {
 }
 
 func (srv ShortenerService) ShortenLink(link string) (string, error) {
-	const linkRegexp = `^(http|https):\/\/[^\s/$.?#].[^\s]*$`
 	if len(link) > srv.config.OriginalLinkMaxLength {
 		return "", ErrOriginalLinkIsTooLong
 	}
 
-	var validLinkRegex = regexp.MustCompile(linkRegexp)
-	if !validLinkRegex.MatchString(link) {
+	if !srv.linkValidator.Validate(link) {
 		return "", ErrOriginalLinkIsNotValid
 	}
 

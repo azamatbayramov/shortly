@@ -12,6 +12,7 @@ import (
 	"github.com/azamatbayramov/shortly/internal/service"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/pkg/link/validator"
 )
 
 func main() {
@@ -48,7 +49,9 @@ func main() {
 		return
 	}
 
-	shortenerService := service.NewShortenerService(stor, codr, cfg)
+	vldr := validator.NewNetUrlValidator()
+
+	shortenerService := service.NewShortenerService(stor, codr, vldr, cfg)
 	shortenerController := controller.NewShortenerController(shortenerService)
 
 	r.POST("/shorten", shortenerController.ShortenLink)
