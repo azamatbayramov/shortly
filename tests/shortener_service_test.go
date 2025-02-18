@@ -9,13 +9,15 @@ import (
 	"github.com/azamatbayramov/shortly/internal/service"
 	"github.com/azamatbayramov/shortly/internal/storage"
 	"github.com/azamatbayramov/shortly/pkg/coder"
+	"github.com/azamatbayramov/shortly/pkg/link/validator"
 )
 
 func TestShortenerService_ShortenLink(t *testing.T) {
 	store, _ := storage.NewMemoryStorage()
 	cdr, _ := coder.NewBaseCoder("abcdefghijklmnopqrstuvwxyz", 6)
+	vldr := validator.NewNetUrlValidator()
 	cfg := &config.Config{OriginalLinkMaxLength: 100}
-	shortener := service.NewShortenerService(store, cdr, cfg)
+	shortener := service.NewShortenerService(store, cdr, vldr, cfg)
 
 	link := "https://example.com"
 	shortLink, err := shortener.ShortenLink(link)
@@ -34,8 +36,9 @@ func TestShortenerService_ShortenLink(t *testing.T) {
 func TestShortenerService_GetFullLink(t *testing.T) {
 	store, _ := storage.NewMemoryStorage()
 	cdr, _ := coder.NewBaseCoder("abcdefghijklmnopqrstuvwxyz", 6)
+	vldr := validator.NewNetUrlValidator()
 	cfg := &config.Config{OriginalLinkMaxLength: 100}
-	shortener := service.NewShortenerService(store, cdr, cfg)
+	shortener := service.NewShortenerService(store, cdr, vldr, cfg)
 
 	link := "https://example.com"
 	shortLink, _ := shortener.ShortenLink(link)
