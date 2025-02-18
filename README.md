@@ -18,7 +18,7 @@ Shortly is a **simple API** for a link shortening service. It provides endpoints
   - [Docker Compose (with PostgreSQL)](#using-docker-compose-with-postgresql)
 - [Environment Variables](#environment-variables)
 - [Testing](#testing)
-- [CI/CD](#cicd)
+- [CI](#ci)
 - [License](#license)
 
 ---
